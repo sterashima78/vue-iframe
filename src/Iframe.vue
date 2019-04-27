@@ -3,11 +3,34 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from "vue-property-decorator";
+import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 import { debounce } from "typescript-debounce-decorator";
+import { Optional } from "typescript-optional";
 @Component
 export default class VIframe extends Vue {
-  private iframe: HTMLIFrameElement = document.createElement("iframe");
+  @Prop({ type: String, default: "" })
+  private body!: string;
+
+  private iframe(): HTMLIFrameElement {
+    return this.$el as HTMLIFrameElement;
+  }
+
+  private window(): Optional<Window> {
+    return Optional.ofNullable(this.iframe().contentWindow);
+  }
+
+  private document(): Optional<Document> {
+    return this.window().map(w => w.document);
+  }
+
+  private head(): Optional<HTMLHeadElement> {
+    return this.document().map(d => d.head);
+  }
+
+  private bodyElement(): Optional<HTMLElement> {
+    return this.document().map(d => d.body);
+  }
+
   private mounted() {
     this.reload();
   }
@@ -18,17 +41,12 @@ export default class VIframe extends Vue {
   @debounce(500, { leading: false })
   private reload() {
     this.$emit("loadstart");
-    const ele: HTMLIFrameElement | null = this.$el as HTMLIFrameElement;
-    if (ele == null) {
-      return this.delayReload();
-    }
-    if (ele.contentWindow == null) {
-      return this.delayReload();
-    }
-    ele.onload = () => {
+    if (!this.window().isPresent()) return this.delayReload();
+    this.iframe().onload = () => {
+      this.updateBody()
       this.$emit("loaded");
     };
-    ele.contentWindow.location.reload();
+    this.window().get().location.reload();
   }
 
   /**
@@ -38,6 +56,11 @@ export default class VIframe extends Vue {
     return setTimeout(() => {
       this.reload();
     }, 100);
+  }
+
+  @Watch("body")
+  private updateBody(){
+    this.bodyElement().ifPresent(body => body.innerHTML = this.body);
   }
 }
 </script>
