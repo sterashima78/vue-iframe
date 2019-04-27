@@ -61,7 +61,7 @@ export default class VIframe extends Vue {
       this.addLinks();
       this.addStyles();
       await this.addScriptSrc();
-      await this.addInlineScript();
+      this.addInlineScript();
       this.$emit("loaded");
     };
     this.window()
@@ -118,10 +118,10 @@ export default class VIframe extends Vue {
     }
   }
 
-  private async addInlineScript(): Promise<void> {
+  private addInlineScript(): void {
     const script = this.createScript();
     script.innerText = this.script;
-    await this.insertScript(script);
+    this.bodyElement().ifPresent(body => body.appendChild(script));
   }
 
   private insertScript(scriptElement: HTMLScriptElement): Promise<void> {

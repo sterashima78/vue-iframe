@@ -105,6 +105,8 @@ storiesOf("Vue Iframe", module)
         </section>
         <section style="width: 50%;height:100%">
           <v-iframe 
+            @loaded="loaded" 
+            @loadstart="loadstart" 
             :body="body" 
             :styles="styles"
             :cssLinks="cssLinks" 
@@ -113,6 +115,10 @@ storiesOf("Vue Iframe", module)
           />
         </section>
       </div>`,
+    methods: {
+      loaded: action("loaded"),
+      loadstart: action("loadstart")
+    },
     data() {
       return {
         body:
