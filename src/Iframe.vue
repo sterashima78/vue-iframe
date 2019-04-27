@@ -1,8 +1,9 @@
 <template>
-  <iframe frameBorder="0"/>
+  <iframe frameBorder="0" />
 </template>
 
 <script lang="ts">
+import uuid from "uuid";
 import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 import { debounce } from "typescript-debounce-decorator";
 import { Optional } from "typescript-optional";
@@ -12,11 +13,14 @@ export default class VIframe extends Vue {
   @Prop({ type: String, default: "" })
   private body!: string;
 
-  @Prop({ type: String, default: ""})
+  @Prop({ type: String, default: "" })
   private styles!: string;
 
-  @Prop({ type: String, default: ""})
+  @Prop({ type: String, default: "" })
   private script!: string;
+
+  @Prop({ type: Array, default: () => [] })
+  private cssLinks!: string[];
 
   private iframe(): HTMLIFrameElement {
     return this.$el as HTMLIFrameElement;
@@ -50,12 +54,15 @@ export default class VIframe extends Vue {
     this.$emit("loadstart");
     if (!this.window().isPresent()) return this.delayReload();
     this.iframe().onload = async () => {
-      this.updateBody()
-      this.addStyles()
-      await this.addInlineScript()
+      this.updateBody();
+      this.addLinks();
+      this.addStyles();
+      await this.addInlineScript();
       this.$emit("loaded");
     };
-    this.window().get().location.reload();
+    this.window()
+      .get()
+      .location.reload();
   }
 
   /**
@@ -71,13 +78,28 @@ export default class VIframe extends Vue {
    * Styles
    */
 
-  private addStyles(){
-    this.head().ifPresent(head => head.appendChild(this.createStyle(this.styles)));
+  private addLinks(): void {
+    this.cssLinks.forEach((href: string) => {
+      this.head().ifPresent(head => head.appendChild(this.createLink(href)));
+    });
+  }
+
+  private createLink(link: string): HTMLLinkElement {
+    const ele = document.createElement("link");
+    ele.setAttribute("href", link);
+    ele.setAttribute("rel", "stylesheet");
+    return ele;
+  }
+
+  private addStyles() {
+    this.head().ifPresent(head =>
+      head.appendChild(this.createStyle(this.styles))
+    );
   }
 
   private createStyle(rules: string): HTMLStyleElement {
     const ele = document.createElement("style");
-    ele.innerHTML = rules
+    ele.innerHTML = rules;
     return ele;
   }
 
@@ -85,15 +107,17 @@ export default class VIframe extends Vue {
    * Script
    */
 
-  private addScript(){
-    this.head().ifPresent(head => head.appendChild(this.createStyle(this.styles)));
+  private addScript() {
+    this.head().ifPresent(head =>
+      head.appendChild(this.createStyle(this.styles))
+    );
   }
-  
+
   public addInlineScript(): Promise<void> {
     return new Promise(resolve => {
       const script = this.createScript("");
       script.innerText = this.script;
-      this.head().ifPresent(head => head.appendChild(script))
+      this.head().ifPresent(head => head.appendChild(script));
       script.onload = () => {
         resolve();
       };
@@ -109,20 +133,19 @@ export default class VIframe extends Vue {
   }
 
   @Watch("body")
-  private updateBody(){
-    this.bodyElement().ifPresent(body => body.innerHTML = this.body);
+  private updateBody() {
+    this.bodyElement().ifPresent(body => (body.innerHTML = this.body));
   }
 
   @Watch("styles")
   private updateStyles() {
-    this.reload()
+    this.reload();
   }
 
   @Watch("script")
   private updateScript() {
-    this.reload()
+    this.reload();
   }
-  
 }
 </script>
 
