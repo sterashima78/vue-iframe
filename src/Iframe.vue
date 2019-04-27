@@ -22,6 +22,9 @@ export default class VIframe extends Vue {
   @Prop({ type: Array, default: () => [] })
   private cssLinks!: string[];
 
+  @Prop({ type: Array, default: () => [] })
+  private scriptsSrc!: string[];
+
   private iframe(): HTMLIFrameElement {
     return this.$el as HTMLIFrameElement;
   }
@@ -57,6 +60,7 @@ export default class VIframe extends Vue {
       this.updateBody();
       this.addLinks();
       this.addStyles();
+      await this.addScriptSrc();
       await this.addInlineScript();
       this.$emit("loaded");
     };
@@ -107,30 +111,37 @@ export default class VIframe extends Vue {
    * Script
    */
 
-  private addScript() {
-    this.head().ifPresent(head =>
-      head.appendChild(this.createStyle(this.styles))
-    );
+  private async addScriptSrc(): Promise<void> {
+    for (const src of this.scriptsSrc) {
+      const script = this.createScript(src);
+      await this.insertScript(script)
+    }
   }
 
-  public addInlineScript(): Promise<void> {
+  private async addInlineScript(): Promise<void> {
+    const script = this.createScript();
+    script.innerText = this.script;
+    await this.insertScript(script)
+  }
+
+  private insertScript(scriptElement: HTMLScriptElement): Promise<void> {
     return new Promise(resolve => {
-      const script = this.createScript("");
-      script.innerText = this.script;
-      this.head().ifPresent(head => head.appendChild(script));
-      script.onload = () => {
+      this.bodyElement().ifPresent(body => body.appendChild(scriptElement));
+      scriptElement.onload = () => {
         resolve();
       };
     });
   }
 
-  private createScript(src: string): HTMLScriptElement {
+  private createScript(src: string = ""): HTMLScriptElement {
     const script = document.createElement("script");
-    if (src !== "") {
-      script.setAttribute("src", src);
-    }
+    if (src !== "") script.setAttribute("src", src);
     return script;
   }
+
+  /**
+   * watcher
+   */
 
   @Watch("body")
   private updateBody() {
@@ -144,6 +155,16 @@ export default class VIframe extends Vue {
 
   @Watch("script")
   private updateScript() {
+    this.reload();
+  }
+
+  @Watch("cssLinks")
+  private updateCssLinks() {
+    this.reload();
+  }
+
+  @Watch("scriptsSrc")
+  private updateScriptsSrc() {
     this.reload();
   }
 }

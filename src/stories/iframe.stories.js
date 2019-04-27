@@ -2,7 +2,7 @@ import { storiesOf } from "@storybook/vue";
 import { action } from "@storybook/addon-actions";
 
 import VIframe from "../Iframe.vue";
-import { withKnobs, text, array, number } from "@storybook/addon-knobs";
+import { withKnobs, text, array } from "@storybook/addon-knobs";
 import { withInfo } from "storybook-addon-vue-info";
 
 storiesOf("Vue Iframe", module)
@@ -18,6 +18,7 @@ storiesOf("Vue Iframe", module)
                   :body="body" 
                   :styles="styles"
                   :cssLinks="cssLinks" 
+                  :scriptsSrc="scriptsSrc" 
                   :script="script"
                 />`,
       methods: {
@@ -28,9 +29,11 @@ storiesOf("Vue Iframe", module)
         body: {
           default: text(
             "body",
-            `<div class="alert alert-primary">alert</div>\n` +
+            `<div class="alert alert-primary">alert\n  `+
+            `<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button>\n`+
+            `</div>\n` +
               `<p>Hello world</p>\n` +
-              `<button onClick="clicked()">\n  <span>click <i class="fas fa-beer"></i></span>\n</button>`
+              `<button id="btn">\n  <span>click <i class="fas fa-beer"></i></span>\n</button>`
           )
         },
         cssLinks: {
@@ -53,8 +56,15 @@ storiesOf("Vue Iframe", module)
               `}`
           )
         },
+        scriptsSrc: {
+          default: () =>
+            array("scriptSrc", [
+              "https://code.jquery.com/jquery-3.3.1.slim.min.js",
+              "https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            ])
+        },
         script: {
-          default: text("script", 'function clicked(){alert("clicked")}')
+          default: text("script", '$("#btn").click(function(){alert("clicked")})')
         }
       }
     }),
