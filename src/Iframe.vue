@@ -6,7 +6,6 @@
 import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 import { debounce } from "typescript-debounce-decorator";
 import { Optional } from "typescript-optional";
-import { StyleRules } from "@/style/StyleRules";
 
 @Component
 export default class VIframe extends Vue {
@@ -15,6 +14,9 @@ export default class VIframe extends Vue {
 
   @Prop({ type: String, default: ""})
   private styles!: string;
+
+  @Prop({ type: String, default: ""})
+  private script!: string;
 
   private iframe(): HTMLIFrameElement {
     return this.$el as HTMLIFrameElement;
@@ -47,9 +49,10 @@ export default class VIframe extends Vue {
   private reload() {
     this.$emit("loadstart");
     if (!this.window().isPresent()) return this.delayReload();
-    this.iframe().onload = () => {
+    this.iframe().onload = async () => {
       this.updateBody()
       this.addStyles()
+      await this.addInlineScript()
       this.$emit("loaded");
     };
     this.window().get().location.reload();
@@ -64,6 +67,10 @@ export default class VIframe extends Vue {
     }, 100);
   }
 
+  /**
+   * Styles
+   */
+
   private addStyles(){
     this.head().ifPresent(head => head.appendChild(this.createStyle(this.styles)));
   }
@@ -74,6 +81,33 @@ export default class VIframe extends Vue {
     return ele;
   }
 
+  /**
+   * Script
+   */
+
+  private addScript(){
+    this.head().ifPresent(head => head.appendChild(this.createStyle(this.styles)));
+  }
+  
+  public addInlineScript(): Promise<void> {
+    return new Promise(resolve => {
+      const script = this.createScript("");
+      script.innerText = this.script;
+      this.head().ifPresent(head => head.appendChild(script))
+      script.onload = () => {
+        resolve();
+      };
+    });
+  }
+
+  private createScript(src: string): HTMLScriptElement {
+    const script = document.createElement("script");
+    if (src !== "") {
+      script.setAttribute("src", src);
+    }
+    return script;
+  }
+
   @Watch("body")
   private updateBody(){
     this.bodyElement().ifPresent(body => body.innerHTML = this.body);
@@ -81,6 +115,11 @@ export default class VIframe extends Vue {
 
   @Watch("styles")
   private updateStyles() {
+    this.reload()
+  }
+
+  @Watch("script")
+  private updateScript() {
     this.reload()
   }
   
