@@ -114,14 +114,14 @@ export default class VIframe extends Vue {
   private async addScriptSrc(): Promise<void> {
     for (const src of this.scriptsSrc) {
       const script = this.createScript(src);
-      await this.insertScript(script)
+      await this.insertScript(script);
     }
   }
 
   private async addInlineScript(): Promise<void> {
     const script = this.createScript();
     script.innerText = this.script;
-    await this.insertScript(script)
+    await this.insertScript(script);
   }
 
   private insertScript(scriptElement: HTMLScriptElement): Promise<void> {
