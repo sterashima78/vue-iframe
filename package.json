@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "core-js": "^2.6.5",
+    "typescript-debounce-decorator": "0.0.17",
     "vue": "^2.6.10",
     "vue-class-component": "^7.0.2",
     "vue-property-decorator": "^8.1.0"
@@ -21,6 +22,7 @@
     "@storybook/addon-knobs": "^4.1.0 || ^5.0.0",
     "@storybook/addon-links": "^4.1.0 || ^5.0.0",
     "@storybook/addon-notes": "^4.1.0 || ^5.0.0",
+    "@storybook/addon-storysource": "^5.0.10",
     "@types/jest": "^23.1.4",
     "@vue/cli-plugin-babel": "^3.6.0",
     "@vue/cli-plugin-eslint": "^3.6.0",
@@ -34,6 +36,7 @@
     "babel-eslint": "^10.0.1",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
+    "storybook-addon-vue-info": "^1.1.1",
     "ts-jest": "^23.0.0",
     "typescript": "^3.4.3",
     "vue-cli-plugin-storybook": "^0.6.1",
