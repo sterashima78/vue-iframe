@@ -13,8 +13,8 @@ export default class VIframe extends Vue {
   @Prop({ type: String, default: "" })
   private body!: string;
 
-  @Prop({ type: Object, default: ()=> StyleRules.of([]) })
-  private styles!: StyleRules;
+  @Prop({ type: String, default: ""})
+  private styles!: string;
 
   private iframe(): HTMLIFrameElement {
     return this.$el as HTMLIFrameElement;
@@ -49,7 +49,7 @@ export default class VIframe extends Vue {
     if (!this.window().isPresent()) return this.delayReload();
     this.iframe().onload = () => {
       this.updateBody()
-      this.updateStyles()
+      this.addStyles()
       this.$emit("loaded");
     };
     this.window().get().location.reload();
@@ -64,10 +64,13 @@ export default class VIframe extends Vue {
     }, 100);
   }
 
-  private createStyle(rules: StyleRules): HTMLStyleElement {
+  private addStyles(){
+    this.head().ifPresent(head => head.appendChild(this.createStyle(this.styles)));
+  }
+
+  private createStyle(rules: string): HTMLStyleElement {
     const ele = document.createElement("style");
-    ele.innerHTML = rules.toString()
-    console.log(ele, rules.toString())
+    ele.innerHTML = rules
     return ele;
   }
 
@@ -77,10 +80,10 @@ export default class VIframe extends Vue {
   }
 
   @Watch("styles")
-  private updateStyles(){
-    console.log("update style", this.styles)
-    this.head().ifPresent(head => head.appendChild(this.createStyle(this.styles)));
+  private updateStyles() {
+    this.reload()
   }
+  
 }
 </script>
 

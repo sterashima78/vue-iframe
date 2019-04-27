@@ -45,23 +45,17 @@ storiesOf("Vue Iframe", module)
         )
       },
       styles: {
-        default: ()=> {
-          const obj = object("styles", {
-            p : [
-              ["size", "30px"],
-              ["background", "blue"]
-            ],
-            span: [
-              ["size", "12px"],
-              ["color", "blue"]
-            ]
-          })
-          return StyleRules.of(Object.keys(obj).map(k => {
-            const m = new Map();
-            obj[k].forEach(i => m.set(i[0], i[1]))
-            return StyleRule.of(k, m);
-          }))
-        }
+        default: text(
+          "styles",
+          `p {\n  `
+          +`background: green;\n  `
+          +`font: 25px;\n`
+          +`}\n`
+          +`span {\n  `
+          +`color: green;\n  `
+          +`font: 14px;\n`
+          +`}`
+        )
           
       }
     }
