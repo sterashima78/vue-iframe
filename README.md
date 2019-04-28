@@ -1,15 +1,15 @@
-# vue-iframe
+# vue-iframe-sandbox
 
 ## Usage
 
 ```
 // global registration
-import { VIframe } from "vue-iframe"
-Vue.component("v-iframe", VIframe)
+import { VIframeSandbox } from "vue-iframe-sandbox"
+Vue.component("v-iframe-sandbox", VIframeSandbox)
 
-
-import VIframePlugin from "vue-iframe"
-Vue.use(VIframePlugin)
+// or
+import plugin from "vue-iframe-sandbox"
+Vue.use(plugin)
 ```
 
 ## Project setup

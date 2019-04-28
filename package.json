@@ -1,7 +1,13 @@
 {
-  "name": "vue-iframe",
+  "name": "vue-iframe-sandbox",
   "version": "0.1.0",
-  "private": true,
+  "main": "./dist/vue-iframe.common.js",
+  "unpkg": "./dist/vue-iframe.umd.min.js",
+  "jsdelivr": "./dist/vue-iframe.umd.min.js",
+  "private": false,
+  "license": "MIT",
+  "author": "Terashima Shin",
+  "files": ["dist"],
   "scripts": {
     "serve": "vue-cli-service serve",
     "lint": "vue-cli-service lint",
@@ -12,7 +18,8 @@
     "deploy:github": "run-s storybook:build send:github",
     "send:github": "push-dir --dir=storybook-static --branch=gh-pages --message='[ci skip] Deploy'"
   },
-  "dependencies": {
+  "dependencies": {},
+  "devDependencies": {
     "@types/uuid": "^3.4.4",
     "core-js": "^2.6.5",
     "typescript-debounce-decorator": "0.0.17",
@@ -20,9 +27,7 @@
     "uuid": "^3.3.2",
     "vue": "^2.6.10",
     "vue-class-component": "^7.0.2",
-    "vue-property-decorator": "^8.1.0"
-  },
-  "devDependencies": {
+    "vue-property-decorator": "^8.1.0",
     "@storybook/addon-actions": "^4.1.0 || ^5.0.0",
     "@storybook/addon-knobs": "^4.1.0 || ^5.0.0",
     "@storybook/addon-links": "^4.1.0 || ^5.0.0",

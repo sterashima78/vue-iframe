@@ -9,7 +9,7 @@ import { debounce } from "typescript-debounce-decorator";
 import { Optional } from "typescript-optional";
 
 @Component
-export default class VIframe extends Vue {
+export default class VIframeSandbox extends Vue {
   @Prop({ type: String, default: "" })
   private body!: string;
 
