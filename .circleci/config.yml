@@ -22,18 +22,18 @@ jobs:
             - node_moduels
           key: npm-packages-{{ .Branch }}-{{ checksum "package-lock.json" }}
       - run:
+          name: Deploy
+          command: |
+            git config --global user.name "Circle CI"
+            git config --global user.email "<>"
+            npm run deploy:github
+      - run:
           name: Publish package
           command: |
             echo "//registry.npmjs.org/:_authToken=${npmToken}" > ~/.npmrc
             npm whoami
             npm run build
             npm publish
-      - run:
-          name: Deploy
-          command: |
-            git config --global user.name "Circle CI"
-            git config --global user.email "<>"
-            npm run deploy:github
 workflows:
   version: 2
   deploy:
