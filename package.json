@@ -1,13 +1,15 @@
 {
   "name": "vue-iframe-sandbox",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "./dist/vue-iframe.common.js",
   "unpkg": "./dist/vue-iframe.umd.min.js",
   "jsdelivr": "./dist/vue-iframe.umd.min.js",
   "private": false,
   "license": "MIT",
   "author": "sterashima78",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "serve": "vue-cli-service serve",
     "lint": "vue-cli-service lint",
