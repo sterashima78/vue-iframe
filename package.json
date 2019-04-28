@@ -6,7 +6,7 @@
   "jsdelivr": "./dist/vue-iframe.umd.min.js",
   "private": false,
   "license": "MIT",
-  "author": "Terashima Shin",
+  "author": "sterashima78",
   "files": ["dist"],
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -16,7 +16,7 @@
     "storybook:serve": "vue-cli-service storybook:serve -p 6006 -c config/storybook",
     "test": "vue-cli-service test:unit",
     "deploy:github": "run-s storybook:build send:github",
-    "send:github": "push-dir --dir=storybook-static --branch=gh-pages --message='[ci skip] Deploy'"
+    "send:github": "push-dir --dir=storybook-static --branch=gh-pages --force --message='[ci skip] Deploy'"
   },
   "dependencies": {},
   "devDependencies": {
