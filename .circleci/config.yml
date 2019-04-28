@@ -7,7 +7,7 @@ jobs:
       - checkout
       - add_ssh_keys:
           fingerprints:
-            - "87:92:32:8b:c7:4e:22:e0:a9:a0:42:19:31:1f:25:a9"
+            - "e0:44:26:96:02:80:9d:84:ac:ed:b7:16:49:47:08:79"
       - restore_cache:
           keys:
             - npm-packages-{{ .Branch }}-{{ checksum "package-lock.json" }}
