@@ -9,7 +9,7 @@
     "storybook:build": "vue-cli-service storybook:build -c config/storybook",
     "storybook:serve": "vue-cli-service storybook:serve -p 6006 -c config/storybook",
     "test": "vue-cli-service test:unit",
-    "deploy:github": "cross-env DEPLOY='github' run-s storybook:build send:github",
+    "deploy:github": "storybook-to-ghpages",
     "send:github": "push-dir --dir=storybook-static --branch=gh-pages --message='[ci skip] Deploy'"
   },
   "dependencies": {
