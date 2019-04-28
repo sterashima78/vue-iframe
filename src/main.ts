@@ -4,7 +4,7 @@ import iframe from "./Iframe.vue";
 
 const VueIframe: PluginObject<any> = {
   install(vue: typeof Vue, _) {
-    vue.component("VIframe", iframe);
+    vue.component("v-iframe", iframe);
   }
 };
 export const VIframe = iframe;

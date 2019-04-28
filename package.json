@@ -8,7 +8,9 @@
     "build": "vue-cli-service build --target lib --name vue-iframe ./src/main.ts",
     "storybook:build": "vue-cli-service storybook:build -c config/storybook",
     "storybook:serve": "vue-cli-service storybook:serve -p 6006 -c config/storybook",
-    "test": "vue-cli-service test:unit"
+    "test": "vue-cli-service test:unit",
+    "deploy:github": "cross-env DEPLOY='github' run-s storybook:build send:github",
+    "send:github": "push-dir --dir=storybook-static --branch=gh-pages --message='[ci skip] Deploy'"
   },
   "dependencies": {
     "@types/uuid": "^3.4.4",
@@ -39,6 +41,8 @@
     "babel-eslint": "^10.0.1",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
+    "npm-run-all": "^4.1.5",
+    "push-dir": "^0.4.1",
     "storybook-addon-vue-info": "^1.1.1",
     "ts-jest": "^23.0.0",
     "typescript": "^3.4.3",

@@ -54,7 +54,6 @@ export default class VIframe extends Vue {
    */
   @debounce(500, { leading: false })
   private reload() {
-    this.$emit("loadstart");
     if (!this.window().isPresent()) return this.delayReload();
     this.iframe().onload = async () => {
       this.updateBody();
@@ -62,7 +61,7 @@ export default class VIframe extends Vue {
       this.addStyles();
       await this.addScriptSrc();
       this.addInlineScript();
-      this.$emit("loaded");
+      this.$emit("loaded", this.window().get());
     };
     this.window()
       .get()

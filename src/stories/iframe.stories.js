@@ -14,7 +14,6 @@ storiesOf("Vue Iframe", module)
       components: { VIframe },
       template: `<v-iframe 
                   @loaded="loaded" 
-                  @loadstart="loadstart" 
                   :body="body" 
                   :styles="styles"
                   :cssLinks="cssLinks" 
@@ -23,7 +22,6 @@ storiesOf("Vue Iframe", module)
                 />`,
       methods: {
         loaded: action("loaded"),
-        loadstart: action("loadstart")
       },
       props: {
         body: {
@@ -106,7 +104,6 @@ storiesOf("Vue Iframe", module)
         <section style="width: 50%;height:100%">
           <v-iframe 
             @loaded="loaded" 
-            @loadstart="loadstart" 
             :body="body" 
             :styles="styles"
             :cssLinks="cssLinks" 
@@ -117,7 +114,6 @@ storiesOf("Vue Iframe", module)
       </div>`,
     methods: {
       loaded: action("loaded"),
-      loadstart: action("loadstart")
     },
     data() {
       return {

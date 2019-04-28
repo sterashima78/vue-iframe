@@ -1,5 +1,17 @@
 # vue-iframe
 
+## Usage
+
+```
+// global registration
+import { VIframe } from "vue-iframe"
+Vue.component("v-iframe", VIframe)
+
+
+import VIframePlugin from "vue-iframe"
+Vue.use(VIframePlugin)
+```
+
 ## Project setup
 ```
 npm install
