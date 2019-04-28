@@ -28,6 +28,15 @@ jobs:
             git config --global user.email "<>"
             ssh-keyscan github.com >> ~/.ssh/known_hosts
             npm run deploy:github
+      - run:
+          name: Authenticate with registry
+          command: echo "//registry.npmjs.org/:_authToken=$npmToken" > ~/repo/.npmrc
+      - run:
+          name: Build
+          command: npm run build
+      - run:
+          name: Publish package
+          command: npm publish
 workflows:
   version: 2
   deploy:
