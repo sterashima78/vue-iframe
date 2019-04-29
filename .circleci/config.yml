@@ -18,10 +18,6 @@ jobs:
           paths:
             - node_moduels
           key: npm-packages-{{ .Branch }}-{{ checksum "package-lock.json" }}
-      - persist_to_workspace:    
-          root: node_moduels
-          path: 
-            - .
 
   storybook:
     docker:
@@ -31,8 +27,12 @@ jobs:
       - add_ssh_keys:
           fingerprints:
             - "e0:44:26:96:02:80:9d:84:ac:ed:b7:16:49:47:08:79"
-      - attach_workspace:
-          at: node_moduels
+      - restore_cache:
+          keys:
+            - npm-packages-{{ .Branch }}-{{ checksum "package-lock.json" }}
+            - npm-packages-{{ .Branch }}
+            - npm-packages-master
+            - npm-packages-
       - run:
           name: Deploy
           command: |
@@ -44,8 +44,12 @@ jobs:
       - image: node:12
     steps:
       - checkout
-      - attach_workspace:
-          at: node_moduels
+      - restore_cache:
+          keys:
+            - npm-packages-{{ .Branch }}-{{ checksum "package-lock.json" }}
+            - npm-packages-{{ .Branch }}
+            - npm-packages-master
+            - npm-packages-
       - run:
           name: Publish package
           command: |
