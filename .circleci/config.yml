@@ -67,5 +67,4 @@ workflows:
       - build_publish:
           filters:
             tags:
-              only: 
-                - /^v\d+\.\d+\.\d+$/
+              only: /^v.*/
