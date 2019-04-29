@@ -7,5 +7,5 @@ const VueIframe: PluginObject<any> = {
     vue.component("v-iframe", iframe);
   }
 };
-export const VIframe = iframe;
+export const VIframeSandbox = iframe;
 export default VueIframe;
