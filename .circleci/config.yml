@@ -20,6 +20,8 @@ jobs:
           key: npm-packages-{{ .Branch }}-{{ checksum "package-lock.json" }}
       - persist_to_workspace:    
           root: node_moduels
+          path: 
+            - .
 
   storybook:
     docker:
