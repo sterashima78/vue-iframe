@@ -1,13 +1,12 @@
 version: 2
 jobs:
-  build_deploy:
+  package_install:
     docker:
       - image: node:12
     steps:
       - checkout
-      - add_ssh_keys:
-          fingerprints:
-            - "e0:44:26:96:02:80:9d:84:ac:ed:b7:16:49:47:08:79"
+      - persist_to_workspace:    
+          root: build_workspace
       - restore_cache:
           keys:
             - npm-packages-{{ .Branch }}-{{ checksum "package-lock.json" }}
@@ -21,12 +20,30 @@ jobs:
           paths:
             - node_moduels
           key: npm-packages-{{ .Branch }}-{{ checksum "package-lock.json" }}
+
+  storybook:
+    docker:
+      - image: node:12
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints:
+            - "e0:44:26:96:02:80:9d:84:ac:ed:b7:16:49:47:08:79"
+      - attach_workspace:
+          at: build_workspace
       - run:
           name: Deploy
           command: |
             git config --global user.name "Circle CI"
             git config --global user.email "<>"
             npm run deploy:github
+  build_publish: 
+    docker:
+      - image: node:12
+    steps:
+      - checkout
+      - attach_workspace:
+          at: build_workspace
       - run:
           name: Publish package
           command: |
@@ -34,12 +51,26 @@ jobs:
             npm whoami
             npm run build
             npm publish
+
 workflows:
   version: 2
-  deploy:
+  ghpage:
     jobs:
-      - build_deploy:
+      - package_install
+      - storybook:
+          requires:
+            - package_install
           filters:
             branches:
               only: 
                 - master
+  publish:
+    jobs:
+      - package_install
+      - build_publish:
+          requires:
+            - package_install
+          filters:
+            branches:
+              tags: 
+                - /^v\d+\.\d+\.\d+$/
