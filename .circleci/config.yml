@@ -64,7 +64,7 @@ workflows:
             branches:
               only: 
                 - master
-  publish:
+  npmpublish:
     jobs:
       - package_install
       - build_publish:
