@@ -6,7 +6,7 @@ jobs:
     steps:
       - checkout
       - persist_to_workspace:    
-          root: build_workspace
+          root: .
       - restore_cache:
           keys:
             - npm-packages-{{ .Branch }}-{{ checksum "package-lock.json" }}
@@ -30,7 +30,7 @@ jobs:
           fingerprints:
             - "e0:44:26:96:02:80:9d:84:ac:ed:b7:16:49:47:08:79"
       - attach_workspace:
-          at: build_workspace
+          at: .
       - run:
           name: Deploy
           command: |
@@ -43,7 +43,7 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: build_workspace
+          at: .
       - run:
           name: Publish package
           command: |
