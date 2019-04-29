@@ -12,6 +12,8 @@ import plugin from "vue-iframe-sandbox"
 Vue.use(plugin)
 ```
 
+see storybook: https://sterashima78.github.io/vue-iframe
+
 ## Project setup
 ```
 npm install
