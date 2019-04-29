@@ -71,6 +71,6 @@ workflows:
           requires:
             - package_install
           filters:
-            branches:
-              tags: 
+            tags:
+              only: 
                 - /^v\d+\.\d+\.\d+$/
