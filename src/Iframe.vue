@@ -119,7 +119,7 @@ export default class VIframeSandbox extends Vue {
 
   private addInlineScript(): void {
     const script = this.createScript();
-    script.innerText = this.script;
+    script.textContent = this.script;
     this.bodyElement().ifPresent(body => body.appendChild(script));
   }
 
