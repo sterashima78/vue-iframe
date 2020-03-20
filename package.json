@@ -1,7 +1,7 @@
 {
   "name": "vue-iframe-sandbox",
   "description": "iframe sandbox vue component",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "main": "./dist/vue-iframe.common.js",
   "unpkg": "./dist/vue-iframe.umd.min.js",
   "jsdelivr": "./dist/vue-iframe.umd.min.js",
